@@ -1,0 +1,25 @@
+PODS:
+  - AMap2DMap (5.6.1):
+    - AMapFoundation (~> 1.4)
+  - AMapFoundation (1.6.7)
+  - AMapLocation (2.6.8):
+    - AMapFoundation (~> 1.6.4)
+
+DEPENDENCIES:
+  - AMap2DMap
+  - AMapLocation
+
+SPEC REPOS:
+  trunk:
+    - AMap2DMap
+    - AMapFoundation
+    - AMapLocation
+
+SPEC CHECKSUMS:
+  AMap2DMap: cac76bc057de18a1641f34df6b50bf5bc6b23571
+  AMapFoundation: c7da72b42a713f1429c88af1858d623dde88934b
+  AMapLocation: dad27669c4ca68e395ce7532ff614b7d4d45f7b7
+
+PODFILE CHECKSUM: 1fe7b93a566312d2eb4b2c1ad7605747bacfaa54
+
+COCOAPODS: 1.10.1
