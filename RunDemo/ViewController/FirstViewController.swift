@@ -8,14 +8,21 @@
 import UIKit
 
 class FirstViewController: UIViewController {
-  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-         if segue.identifier == "startRun"{
-            let vc = ViewController()
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "startRun"{
+            let vc = segue.destination as! RunViewController
             vc.modalPresentationStyle = .fullScreen
-            self.present(vc, animated: true, completion: nil)
-         }
-     }
+        }
+    }
 }
+//    @IBAction func turnToRunViewController(sender: Any?) {
+//        let vc = RunViewController()
+//        vc.modalPresentationStyle = .fullScreen
+//        self.present(vc, animated: true, completion: nil)
+//        }
+
+
+
 
     /*
     // Only override draw() if you perform custom drawing.

@@ -16,7 +16,5 @@ class RunModel: NSObject {
         self.speed = speed
         self.distance = distance
         self.time = time
-        
-        
     }
 }
