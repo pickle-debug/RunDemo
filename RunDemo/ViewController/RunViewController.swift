@@ -18,22 +18,23 @@ class RunViewController: UIViewController, MAMapViewDelegate, AMapLocationManage
     let pedometer = CMPedometer()
     var time = 0
     var locateCount = 0
-    let locationManager = CLLocationManager()
+//    var locationManager = CLLocationManager()
     var startLocation: CLLocation!
     var lastLocation: CLLocation!
     //总共移动的距离
     var travelDistance: Double = 0
+    
+    var locationManager:AMapLocationManager!
     override func viewDidLoad() {
         super.viewDidLoad()
+        locationManager = AMapLocationManager()
         locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.distanceFilter = 100
-        locationManager.requestAlwaysAuthorization()
-        if (CLLocationManager.locationServicesEnabled())
-        {
-            locationManager.startUpdatingLocation()
-            print("定位开始")
-        }
+        locationManager.pausesLocationUpdatesAutomatically = false
+        locationManager.allowsBackgroundLocationUpdates = true
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        locationManager.startUpdatingLocation()
     }
     @IBAction func startAction(_ sender: UIButton){
         if(centerButton.titleLabel?.text == "开始统计"){
@@ -46,6 +47,14 @@ class RunViewController: UIViewController, MAMapViewDelegate, AMapLocationManage
             centerButton.setTitle("开始统计", for: .normal)
         }
     }
+    func updateLabelWithLocation(location:CLLocation!){
+        if startLocation == nil {
+            startLocation = location.first
+            
+        }
+        let speed = String(format: "%.2f", location.speed)
+        self.speedLabel.text = speed
+    }
     func startPedometerUpdates(){
         distanceLabel.text = "0.00"
         if CMPedometer .isStepCountingAvailable(){
@@ -54,15 +63,12 @@ class RunViewController: UIViewController, MAMapViewDelegate, AMapLocationManage
                     print (error!)
                     return
                 }
-                let distanceText = pedometerData?.distance
-                var speed = ""
-                if let currentPace = pedometerData?.currentPace{
-                    speed += "\(currentPace)"
-                }
-                DispatchQueue.main.async {
-                    self.distanceLabel.text = "\(Double(distanceText!))"
-                    self.speedLabel.text = speed
-                }
+                let distanceString = String(format: "%.2f",pedometerData?.distance as! CVarArg)
+                self.distanceLabel.text = distanceString
+
+//                DispatchQueue.main.async {
+//                    self.distanceLabel.text = distanceText
+//                }
             })
         }else {
             self.distanceLabel.text = "当前距离不可读"
@@ -73,5 +79,11 @@ class RunViewController: UIViewController, MAMapViewDelegate, AMapLocationManage
         timeLabel.text = String(format: "%02d:%02d", time/60,time%60)
     }
     //计时器
+    func amapLocationManager(_ manager: AMapLocationManager!,doRequireLocationAuth locationManager:CLLocationManager!){
+        locationManager.requestAlwaysAuthorization()
+    }
+    func amapLocationManager(_ manager: AMapLocationManager!, didUpdate location: CLLocation!) {
+        updateLabelWithLocation(location)
+    }
 }
 
