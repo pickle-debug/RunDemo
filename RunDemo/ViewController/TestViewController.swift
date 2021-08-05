@@ -1,123 +1,133 @@
 //
 //  ViewController.swift
-//  RunDemo
+//  hangge_1544
 //
-//  Created by 何纪栋 on 2021/6/29.
+//  Created by hangge on 2017/7/31.
+//  Copyright © 2017年 hangge.com. All rights reserved.
 //
 
 import UIKit
+import MapKit
+import CoreMotion
 
-class TestViewController: UIViewController, MAMapViewDelegate, AMapLocationManagerDelegate {
-    var locationManager:AMapLocationManager!
-    var locateCount : Int = 0
-    var locationgInfoLabel:UILabel!
+class TestViewController: UIViewController, CLLocationManagerDelegate {
+
+    //用来显示计步器统计信息
+    @IBOutlet weak var label1: UILabel!
+    
+    //用来显示GPS统计信息
+    @IBOutlet weak var label2: UILabel!
+    
+    //计步器对象
+    let pedometer = CMPedometer()
+    
+    //定位管理器
+    let locationManager = CLLocationManager()
+    //最开始的坐标
+    var startLocation: CLLocation!
+    //上一次的坐标
+    var lastLocation: CLLocation!
+    //总共移动的距离（实际距离）
+    var traveledDistance: Double = 0
+    
     override func viewDidLoad() {
-            super.viewDidLoad()
-        self.title = "后台定位"
-//        AMapServices.shared().enableHTTPS = true
-//        let mapView = MAMapView(frame: self.view.bounds)
-//        mapView.delegate = self
-//        mapView.delegate = self
-//        mapView.isShowsUserLocation = true
-//        mapView.userTrackingMode = .follow
-//        self.view.addSubview(mapView)
-        locationManager = AMapLocationManager()
-        locationManager.delegate = self
-        locationManager.pausesLocationUpdatesAutomatically = false
-        locationManager.allowsBackgroundLocationUpdates = true
-        locationManager.locatingWithReGeocode = true
+        super.viewDidLoad()
         
-        configSubView()
-        configToolBar()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    //开始统计按钮点击
+    @IBAction func startButtonTap(_ sender: Any) {
         
-        self.navigationController?.setToolbarHidden(false, animated: false);
-    }
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        locationManager.startUpdatingLocation()
-    }
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    func configSubView(){
-        locationgInfoLabel = UILabel(frame: CGRect(x: 40, y:40, width: self.view.bounds.width - 80,height:self.view.bounds.height - 150))
-        locationgInfoLabel.backgroundColor = UIColor.clear
-        locationgInfoLabel.textColor = UIColor.black
-        locationgInfoLabel.font = UIFont.systemFont(ofSize: 14)
-        locationgInfoLabel.adjustsFontSizeToFitWidth = true
-        locationgInfoLabel.textAlignment = .left
-        locationgInfoLabel.numberOfLines = 0
-        
-            self.view.addSubview(locationgInfoLabel)
-        
-    }
-    func configToolBar(){
-        let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
-        let segmentControl = UISegmentedControl(items: ["开始后台定位","停止后台定位"])
-        segmentControl.addTarget(self, action: #selector(self.locateAction(sender:)), for: UIControl.Event.valueChanged)
-        let segmentItem = UIBarButtonItem(customView: segmentControl)
-        self.toolbarItems = [flexibleItem, segmentItem, flexibleItem]
-        
-        segmentControl.selectedSegmentIndex = 0
-    }
-    @objc func locateAction(sender:UISegmentedControl){
-        if sender.selectedSegmentIndex == 1{
-            locationManager.stopUpdatingLocation()
-            self.locateCount = 0
-        }else {
-            locationManager.startUpdatingLocation()
+        let button = sender as! UIButton
+        if( button.titleLabel?.text == "开始统计" ){
+            //开始获取步数计数据
+            startPedometerUpdates()
+            //开始获取GPS数据
+            startLocationUpdates()
+            //按钮改变
+            button.setTitle("停止统计", for: .normal)
+        }else{
+            self.pedometer.stopUpdates()
+            self.locationManager.stopUpdatingLocation()
+            //按钮改变
+            button.setTitle("开始统计", for: .normal)
         }
     }
-        //开启持续定位
-//        locationManager.startUpdatingLocation()
-    func updateLabeLWithLocation(_ location:CLLocation!, regeocode: AMapLocationReGeocode?) {
-        
-        var infoString = String(format:"连续定位完成:%d\n\n回调时间:%@\n经 度:%.6f\n纬 度:%.6f\n精 度:%.3f米\n海 拔:%.3f米\n速 度:%.3f\n角 度:%.3f\n", self.locateCount,location.timestamp.description,
-                                location.coordinate.longitude,location.coordinate.latitude,
-                                location.horizontalAccuracy,location.altitude,location.speed,location.course)
-        
-//        if regeocode != nil {
-//            let regeoString = String(format:"国家:%@\n省:%@\n市:%@\n城市编码:%@\n区:%@\n区域编码:%@\n地 址:%@\n兴趣点:%@\n",regeocode!.country, regeocode!.province, regeocode!.city, regeocode!.citycode,regeocode!.district, regeocode!.adcode,regeocode!.formattedAddress,regeocode!.poiName)
-//            infoString = infoString + regeoString
-//        }
-//        self.locationgInfoLabel.text = infoString
-    }
     
-    func amapLocationManager(_ manager: AMapLocationManager!, doRequireLocationAuth locationManager: CLLocationManager!) {
-        locationManager.requestAlwaysAuthorization()
-    }
-    func amapLocationManager(_ manager: AMapLocationManager!, didFailWithError error: Error!) {
-        print("Error:\(error)")
-    }
-    func amapLocationManager(_ manager: AMapLocationManager!, didUpdate location: CLLocation!, reGeocode: AMapLocationReGeocode!) {
-        print("Location:\(location)")
+    //开始获取步数计数据
+    func startPedometerUpdates() {
+        label1.text = ""
         
-        self.locateCount += 1
-        updateLabeLWithLocation(location, regeocode: reGeocode)
-    }
-        //接收定位结果回调
-//        func amapLocationManager(_ manager:AMapLocationManager!,didUpdate location:CLLocation!,reGeocode:AMapLocationReGeocode!){
-//            print("Location:\(location)")
-//            NSLog("location:{lat:\(location.coordinate.latitude); lon:\(location.coordinate.longitude);accuracy:\(location.horizontalAccuracy);};");
-//            if let reGeocode=reGeocode{
-//                NSLog("reGeocode:%@",reGeocode)
-//            }
-//        self.locationManager.requestLocation(withReGeocode: true){
-//            (location,regeocode,error) -> Void in
-//            print("\(regeocode)")
-//        }
-//        self.locationManager.locationTimeout = 6
-//        self.locationManager.reGeocodeTimeout = 3
-//    }
-//    override func didReceiveMemoryWarning() {
-//        super.didReceiveMemoryWarning()
-//    }
-}
-        
-    
+        //判断设备支持情况
+        if CMPedometer.isStepCountingAvailable() {
+            //初始化并开始实时获取数据
+            self.pedometer.startUpdates (from: Date(), withHandler: {
+                pedometerData, error in
+                //错误处理
+                guard error == nil else {
+                    print(error!)
+                    return
+                }
                 
+                //获取各个数据
+                var text = "--- 计步器统计数据 ---\n"
+                if let distance = pedometerData?.distance {
+                    text += "行走距离: \(distance)\n"
+                }
+                if let numberOfSteps = pedometerData?.numberOfSteps {
+                    text += "行走步数: \(numberOfSteps)\n"
+                }
+                
+                //在线程中更新文本框数据
+                DispatchQueue.main.async{
+                    self.label1.text = text
+                }
+            })
+        
+        }else {
+            self.label1.text = "\n当前设备不支持获取步数\n"
+            return
+        }
+    }
+    
+    //开始获取GPS数据
+    func startLocationUpdates() {
+        label2.text = ""
+        startLocation = nil
+        traveledDistance = 0
+        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+            locationManager.requestWhenInUseAuthorization()
+            locationManager.startUpdatingLocation()
+            locationManager.startMonitoringSignificantLocationChanges()
+            locationManager.distanceFilter = 10
+        }
+    }
+    
+    //定位数据更新
+    func locationManager(_ manager: CLLocationManager,
+                         didUpdateLocations locations: [CLLocation]) {
+        if startLocation == nil {
+            startLocation = locations.first
+        } else if let location = locations.last {
+            //获取各个数据
+            traveledDistance += lastLocation.distance(from: location)
+            let lineDistance = startLocation.distance(from: locations.last!)
+            var text = "--- GPS统计数据 ---\n"
+            text += "实时距离: \(traveledDistance)\n"
+            text += "直线距离: \(lineDistance)\n"
+            label2.text = text
+            
+        }
+        lastLocation = locations.last
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+
+    }
+}
+
+
