@@ -7,19 +7,20 @@
 
 import UIKit
 
-class FirstViewController: UIViewController {
+
+class FirstViewController: UIViewController, UIViewControllerTransitioningDelegate {
+    @IBOutlet weak var RunButton: UIButton!
+    @IBAction func startRun(_ sender: UIButton) {
+        self.performSegue(withIdentifier: "StartRun", sender: sender)
+    }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "startRun"{
-            let vc = segue.destination as! RunViewController
-            vc.modalPresentationStyle = .fullScreen
+        if segue.identifier == "StartRun"{
+            let RunViewController = segue.destination as! RunViewController
+            RunViewController.modalPresentationStyle = .fullScreen
         }
     }
 }
-//    @IBAction func turnToRunViewController(sender: Any?) {
-//        let vc = RunViewController()
-//        vc.modalPresentationStyle = .fullScreen
-//        self.present(vc, animated: true, completion: nil)
-//        }
+
 
 
 

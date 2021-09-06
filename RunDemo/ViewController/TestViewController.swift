@@ -1,11 +1,11 @@
+////
+////  ViewController.swift
+////  hangge_1544
+////
+////  Created by hangge on 2017/7/31.
+////  Copyright © 2017年 hangge.com. All rights reserved.
+////
 //
-//  ViewController.swift
-//  hangge_1544
-//
-//  Created by hangge on 2017/7/31.
-//  Copyright © 2017年 hangge.com. All rights reserved.
-//
-
 import UIKit
 import MapKit
 import CoreMotion
@@ -14,13 +14,13 @@ class TestViewController: UIViewController, CLLocationManagerDelegate {
 
     //用来显示计步器统计信息
     @IBOutlet weak var label1: UILabel!
-    
+
     //用来显示GPS统计信息
     @IBOutlet weak var label2: UILabel!
-    
+
     //计步器对象
     let pedometer = CMPedometer()
-    
+
     //定位管理器
     let locationManager = CLLocationManager()
     //最开始的坐标
@@ -29,15 +29,15 @@ class TestViewController: UIViewController, CLLocationManagerDelegate {
     var lastLocation: CLLocation!
     //总共移动的距离（实际距离）
     var traveledDistance: Double = 0
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
     }
-    
+
     //开始统计按钮点击
     @IBAction func startButtonTap(_ sender: Any) {
-        
+
         let button = sender as! UIButton
         if( button.titleLabel?.text == "开始统计" ){
             //开始获取步数计数据
@@ -53,11 +53,11 @@ class TestViewController: UIViewController, CLLocationManagerDelegate {
             button.setTitle("开始统计", for: .normal)
         }
     }
-    
+
     //开始获取步数计数据
     func startPedometerUpdates() {
         label1.text = ""
-        
+
         //判断设备支持情况
         if CMPedometer.isStepCountingAvailable() {
             //初始化并开始实时获取数据
@@ -68,7 +68,7 @@ class TestViewController: UIViewController, CLLocationManagerDelegate {
                     print(error!)
                     return
                 }
-                
+
                 //获取各个数据
                 var text = "--- 计步器统计数据 ---\n"
                 if let distance = pedometerData?.distance {
@@ -77,25 +77,25 @@ class TestViewController: UIViewController, CLLocationManagerDelegate {
                 if let numberOfSteps = pedometerData?.numberOfSteps {
                     text += "行走步数: \(numberOfSteps)\n"
                 }
-                
+
                 //在线程中更新文本框数据
                 DispatchQueue.main.async{
                     self.label1.text = text
                 }
             })
-        
+
         }else {
             self.label1.text = "\n当前设备不支持获取步数\n"
             return
         }
     }
-    
+
     //开始获取GPS数据
     func startLocationUpdates() {
         label2.text = ""
         startLocation = nil
         traveledDistance = 0
-        
+
         if CLLocationManager.locationServicesEnabled() {
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
@@ -105,7 +105,7 @@ class TestViewController: UIViewController, CLLocationManagerDelegate {
             locationManager.distanceFilter = 10
         }
     }
-    
+
     //定位数据更新
     func locationManager(_ manager: CLLocationManager,
                          didUpdateLocations locations: [CLLocation]) {
@@ -119,7 +119,7 @@ class TestViewController: UIViewController, CLLocationManagerDelegate {
             text += "实时距离: \(traveledDistance)\n"
             text += "直线距离: \(lineDistance)\n"
             label2.text = text
-            
+
         }
         lastLocation = locations.last
     }
@@ -129,5 +129,6 @@ class TestViewController: UIViewController, CLLocationManagerDelegate {
 
     }
 }
+
 
 

@@ -6,7 +6,7 @@
 
 import UIKit
 import CoreMotion
-import CoreMotion
+import CoreLocation
 
 class RunViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var speedLabel: UILabel!
@@ -40,7 +40,9 @@ class RunViewController: UIViewController, CLLocationManagerDelegate {
             firstLocation = locations.first
         }else if let location = locations.last{
             travelDistance += lastLocation.distance(from: location)
-            distanceLabel.text = String(format:"%02d", travelDistance)
+            let text = "\(travelDistance)"
+            distanceLabel.text = text
+            speedLabel.text = "\(lastLocation.speed)"
         }
         lastLocation = locations.last
     }
@@ -53,6 +55,8 @@ class RunViewController: UIViewController, CLLocationManagerDelegate {
             locationManager.requestAlwaysAuthorization()
             locationManager.startUpdatingLocation()
             locationManager.startMonitoringSignificantLocationChanges()
+            locationManager.pausesLocationUpdatesAutomatically = false
+            locationManager.allowsBackgroundLocationUpdates = true
             locationManager.distanceFilter = 10
         }
     }

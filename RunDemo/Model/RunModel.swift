@@ -6,11 +6,13 @@
 //
 
 import UIKit
+import CoreLocation
 
 class RunModel: NSObject {
     var speed: Int
     var distance: Int
     var time: Int
+//    var location: [CLLocation]
     
     init(_ speed: Int,_ distance: Int,_ time: Int) {
         self.speed = speed
