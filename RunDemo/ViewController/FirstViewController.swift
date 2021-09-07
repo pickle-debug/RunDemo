@@ -9,7 +9,24 @@ import UIKit
 
 
 class FirstViewController: UIViewController, UIViewControllerTransitioningDelegate {
+//TO DO 优化代码，复用
+
     @IBOutlet weak var RunButton: UIButton!
+    
+    override func viewDidLoad() {
+           super.viewDidLoad()
+           initBtn()
+       }
+    
+    func initBtn() {
+//        let screenSize = UIScreen.main.bounds.size
+//        RunButton.frame = CGRect(x: screenSize.width / 2, y: screenSize.height / 2,width: 200, height: 200)
+        RunButton.layer.cornerRadius = 5
+    
+//        let icon = UIImage(named: "icon")
+//        RunButton.setImage(UIImage(named:"icon.png"), for: .normal)
+    }
+    
     @IBAction func startRun(_ sender: UIButton) {
         self.performSegue(withIdentifier: "StartRun", sender: sender)
     }
