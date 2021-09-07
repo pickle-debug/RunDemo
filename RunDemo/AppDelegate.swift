@@ -16,13 +16,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        AMapServices.shared().apiKey = "de040664d7e9f5ad923adab7bfa1f356"
+//        AMapServices.shared().apiKey = "de040664d7e9f5ad923adab7bfa1f356"
         
         return true
     }
 
     // MARK: UISceneSession Lifecycle
 
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        CoreDataStack.saveContext()
+    }
+    
+    func applicationWillTerminate(_ application: UIApplication) {
+        CoreDataStack.saveContext()
+    }
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         // Called when a new scene session is being created.
         // Use this method to select a configuration to create the new scene with.

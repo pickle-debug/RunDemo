@@ -73,7 +73,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dXa-gO-Ugj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2760.8695652173915" y="31.473214285714285"/>
+            <point key="canvasLocation" x="1861" y="737"/>
         </scene>
         <!--Run View Controller-->
         <scene sceneID="Voj-GH-Ypv">
@@ -85,19 +85,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="mrf-i4-V60">
-                                <rect key="frame" x="31" y="50" width="352" height="119.5"/>
+                                <rect key="frame" x="129.5" y="50" width="155" height="69.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="KAZ-tX-WuN">
-                                        <rect key="frame" x="0.0" y="0.0" width="161.5" height="119.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="69.5" height="69.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="_'__''" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7qk-Vc-wTg">
-                                                <rect key="frame" x="0.0" y="0.0" width="161.5" height="91"/>
-                                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="72"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="69.5" height="41"/>
+                                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="30"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="配速" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cb5-y9-SFm">
-                                                <rect key="frame" x="63.5" y="99" width="35" height="20.5"/>
+                                                <rect key="frame" x="17.5" y="49" width="35" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="17"/>
                                                 <color key="textColor" systemColor="systemGray2Color"/>
                                                 <nil key="highlightedColor"/>
@@ -105,16 +105,16 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="13" translatesAutoresizingMaskIntoConstraints="NO" id="2Do-KM-dRs">
-                                        <rect key="frame" x="168.5" y="0.0" width="183.5" height="119.5"/>
+                                        <rect key="frame" x="76.5" y="0.0" width="78.5" height="69.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="justified" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7JY-MB-ZDk">
-                                                <rect key="frame" x="0.0" y="0.0" width="183.5" height="86"/>
-                                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="72"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="78.5" height="36"/>
+                                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="30"/>
                                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="时间" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fRw-q7-wn0">
-                                                <rect key="frame" x="74.5" y="99" width="35" height="20.5"/>
+                                                <rect key="frame" x="22" y="49" width="35" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="17"/>
                                                 <color key="textColor" systemColor="systemGray2Color"/>
                                                 <nil key="highlightedColor"/>
@@ -144,14 +144,14 @@
                                 </constraints>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aN6-VL-1ho">
-                                <rect key="frame" x="166.5" y="648" width="81" height="60"/>
+                                <rect key="frame" x="126.5" y="648" width="161" height="60"/>
                                 <color key="backgroundColor" name="AccentColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="40"/>
-                                <state key="normal" title="开始">
+                                <state key="normal" title="开始跑步">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 </state>
                                 <connections>
-                                    <action selector="startAction:" destination="heP-5j-zo7" eventType="touchUpInside" id="Rmt-go-VsL"/>
+                                    <action selector="flipButton" destination="heP-5j-zo7" eventType="touchUpInside" id="vZh-TZ-8to"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -168,7 +168,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="v3Z-ps-Iax"/>
                     <connections>
-                        <outlet property="centerButton" destination="aN6-VL-1ho" id="9PD-UW-Cc2"/>
+                        <outlet property="centerButton" destination="aN6-VL-1ho" id="og2-Ch-oLq"/>
                         <outlet property="distanceLabel" destination="oSS-uJ-bYB" id="pb1-eQ-PTt"/>
                         <outlet property="speedLabel" destination="7qk-Vc-wTg" id="t3o-gD-s4G"/>
                         <outlet property="timeLabel" destination="7JY-MB-ZDk" id="WP7-Ca-lfb"/>
